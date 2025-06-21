@@ -47,3 +47,16 @@ test('users not authenticated can not see create product page', function () {
     $response = $this->get(route('products.create'));
     $response->assertRedirect(route('login'));
 });
+
+test('users can create product', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $response = $this->post(route('products.create'), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+        'image' => 'test',
+    ]);
+    $response->assertRedirect(route('products.index'));
+});
