@@ -34,3 +34,16 @@ test('to array', function () {
             'updated_at',
         ]);
 });
+
+test('users can see create product page', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $response = $this->get(route('products.create'));
+    $response->assertStatus(200);
+});
+
+test('users not authenticated can not see create product page', function () {
+    $response = $this->get(route('products.create'));
+    $response->assertRedirect(route('login'));
+});
