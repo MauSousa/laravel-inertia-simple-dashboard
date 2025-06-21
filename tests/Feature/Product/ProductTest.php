@@ -11,13 +11,13 @@ test('users can see products page', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $response = $this->get('/products');
+    $response = $this->get(route('products.index'));
     $response->assertStatus(200);
 });
 
 test('users not authenticated can not see products page', function () {
-    $response = $this->get('/products');
-    $response->assertRedirect('/login');
+    $response = $this->get(route('products.index'));
+    $response->assertRedirect(route('login'));
 });
 
 test('to array', function () {
