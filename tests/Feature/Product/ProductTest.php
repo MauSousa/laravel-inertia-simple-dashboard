@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
+use function Pest\Laravel\assertDatabaseHas;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
@@ -48,15 +52,75 @@ test('users not authenticated can not see create product page', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('users can create product', function () {
+test('users can create product with image', function () {
+
+    Storage::fake('products');
+
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $response = $this->post(route('products.create'), [
+    $response = $this->post(route('products.store'), [
         'name' => 'test',
         'description' => 'test',
         'price' => 100,
-        'image' => 'test',
+        'image' => UploadedFile::fake()->image('photo1.jpg'),
+    ]);
+
+    $product = Product::latest()->first();
+
+    /* Storage::disk('products')->assertExists($product->image); */
+    assertDatabaseHas('products', [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+        'image' => $product->image,
     ]);
     $response->assertRedirect(route('products.index'));
+});
+
+test('can create product without image', function () {
+
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $response = $this->post(route('products.store'), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+    ]);
+
+    assertDatabaseHas('products', [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+    ]);
+    $response->assertRedirect(route('products.index'));
+});
+
+test('can not create product without name', function () {
+
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $response = $this->post(route('products.store'), [
+        'description' => 'test',
+        'price' => 100,
+    ]);
+
+    $response->assertSessionHasErrors('name');
+});
+
+test('can not create a product with an invalid image type', function () {
+
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $response = $this->post(route('products.store'), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+        'image' => UploadedFile::fake()->create('photo1.pdf'),
+    ]);
+
+    $response->assertSessionHasErrors('image');
 });
