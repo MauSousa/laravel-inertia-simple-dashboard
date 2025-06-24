@@ -18,6 +18,9 @@
     "lowercase_static_reference": true,
     "array_push": true,
     "strict_comparison": true,
-    "backtick_to_shell_exec": true
+    "backtick_to_shell_exec": true,
+    "concat_space": {
+      "spacing": "one"
+    }
   }
 }
