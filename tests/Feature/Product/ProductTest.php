@@ -11,19 +11,6 @@ use function Pest\Laravel\assertDatabaseHas;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-test('users can see products page', function () {
-    $user = User::factory()->create();
-    $this->actingAs($user);
-
-    $response = $this->get(route('products.index'));
-    $response->assertStatus(200);
-});
-
-test('users not authenticated can not see products page', function () {
-    $response = $this->get(route('products.index'));
-    $response->assertRedirect(route('login'));
-});
-
 test('to array', function () {
     $product = Product::factory()->create()->refresh();
 
@@ -39,6 +26,19 @@ test('to array', function () {
         ]);
 });
 
+test('users can see products page', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $response = $this->get(route('products.index'));
+    $response->assertStatus(200);
+});
+
+test('users not authenticated can not see products page', function () {
+    $response = $this->get(route('products.index'));
+    $response->assertRedirect(route('login'));
+});
+
 test('users can see create product page', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
@@ -49,6 +49,40 @@ test('users can see create product page', function () {
 
 test('users not authenticated can not see create product page', function () {
     $response = $this->get(route('products.create'));
+    $response->assertRedirect(route('login'));
+});
+
+test('users can see show product page', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $product = Product::factory()->create();
+
+    $response = $this->get(route('products.show', $product));
+    $response->assertStatus(200);
+});
+
+test('users not authenticated can not see show product page', function () {
+    $product = Product::factory()->create();
+
+    $response = $this->get(route('products.show', $product));
+    $response->assertRedirect(route('login'));
+});
+
+test('users can see edit product page', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $product = Product::factory()->create();
+
+    $response = $this->get(route('products.edit', $product));
+    $response->assertStatus(200);
+});
+
+test('users not authenticated can not see edit product page', function () {
+    $product = Product::factory()->create();
+
+    $response = $this->get(route('products.edit', $product));
     $response->assertRedirect(route('login'));
 });
 
