@@ -48,17 +48,21 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product): void
+    public function show(Product $product): Response
     {
-        //
+        return inertia('Products/Show', [
+            'product' => $product,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product): void
+    public function edit(Product $product): Response
     {
-        //
+        return inertia('Products/Edit', [
+            'product' => $product,
+        ]);
     }
 
     /**
