@@ -18,7 +18,19 @@ class ProductController extends Controller
      */
     public function index(): Response
     {
-        return inertia('Products/Index', []);
+        $products = Product::orderBy('created_at', 'desc')
+            ->get()
+            ->map(fn ($product) => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'price' => $product->price,
+                'image' => $product->image ? '/storage/products/' . $product->image : '/storage/products/product_placeholder.png',
+            ]);
+
+        return inertia('Products/Index', [
+            'products' => $products,
+        ]);
     }
 
     /**
@@ -40,7 +52,7 @@ class ProductController extends Controller
             $validated['image'] = $action->uploadFile($request, '/');
         }
 
-        $action->handle($request->validated());
+        $action->handle($validated);
 
         return to_route('products.index');
     }
