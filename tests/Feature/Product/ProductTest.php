@@ -93,16 +93,18 @@ test('users can create product with image', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    $file = UploadedFile::fake()->image('photo1.jpg')->size(1024);
+
     $response = $this->post(route('products.store'), [
         'name' => 'test',
         'description' => 'test',
         'price' => 100,
-        'image' => UploadedFile::fake()->image('photo1.jpg'),
+        'image' => $file,
     ]);
 
     $product = Product::latest()->first();
 
-    /* Storage::disk('products')->assertExists($product->image); */
+    Storage::disk('products')->assertExists($product->image);
     assertDatabaseHas('products', [
         'name' => 'test',
         'description' => 'test',
