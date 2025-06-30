@@ -35,4 +35,12 @@ export interface User {
     updated_at: string;
 }
 
+export interface Product {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
