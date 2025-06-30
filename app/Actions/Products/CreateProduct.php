@@ -33,10 +33,8 @@ class CreateProduct
     {
         $image = $request->file('image');
 
-        $flename = Str::uuid() . '.' . $image->extension();
+        $filename = Str::uuid() . '.' . $image->extension();
 
-        Storage::disk('products')->putFileAs($path, $image, $flename);
-
-        return $flename;
+        return Storage::disk('products')->putFileAs($path, $image, $filename);
     }
 }
