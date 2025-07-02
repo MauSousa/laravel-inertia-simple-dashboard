@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('created_at', 'desc')
             ->get()
-            ->map(fn ($product) => [
+            ->map(fn ($product): array => [
                 'id' => $product->id,
                 'name' => $product->name,
                 'description' => $product->description,

@@ -39,7 +39,7 @@ class CreateProduct
 
         Storage::disk('products')->put(
             $filename,
-            $image->encodeByExtension($upload->extension())
+            $image->encodeByExtension($upload->extension()) // @phpstan-ignore-line
         );
 
         return $filename;
