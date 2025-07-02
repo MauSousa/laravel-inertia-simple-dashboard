@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 
 class CreateProduct
 {
@@ -31,10 +32,16 @@ class CreateProduct
      */
     public function uploadFile(Request $request, string $path): string
     {
-        $image = $request->file('image');
+        $upload = $request->file('image');
+        $filename = Str::uuid() . '.' . $upload->extension();
+        $image = Image::read($upload)
+            ->resize(300, 200);
 
-        $filename = Str::uuid() . '.' . $image->extension();
+        Storage::disk('products')->put(
+            $filename,
+            $image->encodeByExtension($upload->extension())
+        );
 
-        return Storage::disk('products')->putFileAs($path, $image, $filename);
+        return $filename;
     }
 }
