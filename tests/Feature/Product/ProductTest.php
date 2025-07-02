@@ -93,7 +93,7 @@ test('users can create product with image', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $file = UploadedFile::fake()->image('photo1.jpg')->size(1024);
+    $file = UploadedFile::fake()->image('photo1.jpg', 500, 500)->size(1024);
 
     $response = $this->post(route('products.store'), [
         'name' => 'test',
