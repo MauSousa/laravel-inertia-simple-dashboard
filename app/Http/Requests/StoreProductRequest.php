@@ -32,4 +32,16 @@ class StoreProductRequest extends FormRequest
             'image' => ['nullable', File::types(['png', 'jpg', 'jpeg'])->min('1kb')->max('5mb')],
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'image' => 'The image must be at least 1kb and at most 5mb',
+        ];
+    }
 }
