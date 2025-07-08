@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Products\CreateProduct;
+use App\Actions\Products\UpdateProduct;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
@@ -80,9 +81,17 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product): void
+    public function update(UpdateProductRequest $request, Product $product, UpdateProduct $action): RedirectResponse
     {
-        //
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $action->uploadFile($request);
+        }
+
+        $action->handle($product, $validated);
+
+        return to_route('products.edit', $product);
     }
 
     /**
