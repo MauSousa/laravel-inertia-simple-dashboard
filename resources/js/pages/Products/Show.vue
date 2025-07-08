@@ -1,13 +1,24 @@
 <script setup lang="ts">
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
+import TextLink from '@/components/TextLink.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, Product } from '@/types';
 import { Head } from '@inertiajs/vue3';
+
+interface Props {
+    product: Product;
+}
+
+const props = defineProps<Props>();
+const image = `/storage/products/${props.product.image}`;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Products',
         href: route('products.index'),
+    },
+    {
+        title: props.product.name,
+        href: '',
     },
 ];
 </script>
@@ -17,19 +28,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
+            <div>
+                <TextLink :href="route('products.edit', props.product.id)" prefetch>Edit</TextLink>
             </div>
             <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                <PlaceholderPattern />
+                <p>Show Product</p>
+                <p>{{ props.product.name }}</p>
+                <p>{{ props.product.description ?? 'No description.' }}</p>
+                <p>{{ props.product.price }}</p>
+                <img :src="image" alt="Product Image" class="h-72 w-72 object-fill" />
             </div>
         </div>
     </AppLayout>
