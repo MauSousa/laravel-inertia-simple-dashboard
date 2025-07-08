@@ -293,3 +293,25 @@ test('can not update product if not authenticated', function () {
 
     $response->assertRedirect(route('login'));
 });
+
+test('can delete product', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->delete(route('products.destroy', $product));
+
+    $response->assertRedirect(route('products.index'));
+    $this->assertDatabaseMissing('products', [
+        'id' => $product->id,
+    ]);
+});
+
+test('can not delete product if not authenticated', function () {
+    $product = Product::factory()->create();
+
+    $response = $this->delete(route('products.destroy', $product));
+
+    $response->assertRedirect(route('login'));
+});
