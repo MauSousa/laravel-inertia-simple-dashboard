@@ -87,12 +87,12 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $action->uploadFile($request);
+            $validated['image'] = $action->uploadFile($request, $product);
         }
 
         $action->handle($product, $validated);
 
-        return to_route('products.edit', $product);
+        return to_route('products.show', $product);
     }
 
     /**
