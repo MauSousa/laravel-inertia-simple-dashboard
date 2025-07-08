@@ -32,8 +32,10 @@ class UpdateProduct
     /**
      * Upload file to the given path.
      */
-    public function uploadFile(Request $request): string
+    public function uploadFile(Request $request, Product $product): string
     {
+        Storage::disk('products')->delete($product->image);
+
         $upload = $request->file('image');
         $filename = Str::uuid() . '.' . $upload->extension();
         $image = Image::read($upload)
