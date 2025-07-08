@@ -213,7 +213,7 @@ test('can update product with new image', function () {
         'image' => $product->image,
     ]);
 
-    $response->assertRedirect(route('products.edit', $product));
+    $response->assertRedirect(route('products.show', $product));
 });
 
 test('can update product without image', function () {
@@ -234,7 +234,7 @@ test('can update product without image', function () {
         'price' => 100,
     ]);
 
-    $response->assertRedirect(route('products.edit', $product));
+    $response->assertRedirect(route('products.show', $product));
 });
 
 test('can not update product without name', function () {
