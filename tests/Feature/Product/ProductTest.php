@@ -86,7 +86,7 @@ test('users not authenticated can not see edit product page', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('users can create product with image', function () {
+test('can create product with image', function () {
 
     Storage::fake('products');
 
@@ -159,4 +159,137 @@ test('can not create a product with an invalid image type', function () {
     ]);
 
     $response->assertSessionHasErrors('image');
+});
+
+test('can not create product with invalid price', function () {
+
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $response = $this->post(route('products.store'), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => -100,
+    ]);
+
+    $response->assertSessionHasErrors('price');
+});
+
+test('can not create product if not authenticated', function () {
+
+    $response = $this->post(route('products.store'), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+    ]);
+
+    $response->assertRedirect(route('login'));
+});
+
+test('can update product with new image', function () {
+    Storage::fake('products');
+
+    $user = User::factory()->create();
+    $product = Product::factory()->create();
+
+    $this->actingAs($user);
+
+    $file = UploadedFile::fake()->image('photo1.jpg', 500, 500)->size(1024);
+
+    $response = $this->patch(route('products.update', $product), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+        'image' => $file,
+    ]);
+
+    $product = Product::latest()->first();
+
+    Storage::disk('products')->assertExists($product->image);
+    assertDatabaseHas('products', [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+        'image' => $product->image,
+    ]);
+
+    $response->assertRedirect(route('products.edit', $product));
+});
+
+test('can update product without image', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->patch(route('products.update', $product), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+    ]);
+
+    assertDatabaseHas('products', [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+    ]);
+
+    $response->assertRedirect(route('products.edit', $product));
+});
+
+test('can not update product without name', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->patch(route('products.update', $product), [
+        'description' => 'test',
+        'price' => 100,
+    ]);
+
+    $response->assertSessionHasErrors('name');
+});
+
+test('can not update a product with an invalid image type', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->patch(route('products.update', $product), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+        'image' => UploadedFile::fake()->create('photo1.pdf'),
+    ]);
+
+    $response->assertSessionHasErrors('image');
+});
+
+test('can not update product with invalid price', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->patch(route('products.update', $product), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => -100,
+    ]);
+
+    $response->assertSessionHasErrors('price');
+});
+
+test('can not update product if not authenticated', function () {
+    $product = Product::factory()->create();
+
+    $response = $this->patch(route('products.update', $product), [
+        'name' => 'test',
+        'description' => 'test',
+        'price' => 100,
+    ]);
+
+    $response->assertRedirect(route('login'));
 });
