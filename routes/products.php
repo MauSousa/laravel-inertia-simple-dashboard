@@ -12,4 +12,5 @@ Route::middleware(['auth', 'verified'])->prefix('products')->name('products.')->
     Route::post('/', [ProductController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->name('store');
     Route::get('/{product}', [ProductController::class, 'show'])->name('show');
     Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
+    Route::patch('/{product}', [ProductController::class, 'update'])->name('update');
 });
