@@ -36,9 +36,8 @@ const props = defineProps<Props>();
                 </div>
             </div>
             <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                <TextLink :href="route('products.create')" class="underline underline-offset-4" :tabindex="6">Create Product</TextLink>
+                <TextLink :href="route('products.create')" prefetch class="underline underline-offset-4" :tabindex="6"> Create Product</TextLink>
                 <div class="mt-4 grid auto-rows-min gap-4 md:grid-cols-3">
-                    <!--{{ props.products }}-->
                     <div
                         v-for="product in props.products"
                         :key="product.id"
@@ -47,6 +46,7 @@ const props = defineProps<Props>();
                         <p>Name: {{ product.name }}</p>
                         <p>Description: {{ product.description }}</p>
                         <p>Price: {{ product.price }}</p>
+                        <TextLink :href="route('products.show', product.id)" prefetch>Show</TextLink>
                         <img :src="product.image" loading="lazy" alt="Product image" class="h-72 w-72 object-contain" />
                     </div>
                 </div>
