@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Products\CreateProduct;
+use App\Actions\Products\DeleteProduct;
 use App\Actions\Products\UpdateProduct;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -97,8 +98,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product): void
+    public function destroy(Product $product, DeleteProduct $action): RedirectResponse
     {
-        //
+        $action->handle($product);
+
+        return to_route('products.index');
     }
 }
