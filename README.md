@@ -16,11 +16,11 @@ A simple project to practice Laravel and Inertia.js.
 4. Copy `.env.example` to `.env`
 5. Run `php artisan key:generate`
 6. Run `php artisan migrate`
-7. Run `php artisan php artisan storage:link`
+7. Run `php artisan storage:link`
 8. Run `php artisan db:seed`
 8. Run `npm install`
 
-### Running the project
+## Running the project
 
 1. Run `php artisan serve`
 2. Run `npm run dev` or `npm run build`
