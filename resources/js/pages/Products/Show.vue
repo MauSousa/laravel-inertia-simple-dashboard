@@ -24,7 +24,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 </script>
 
 <template>
-
     <Head title="Show Product" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -32,8 +31,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             <div>
                 <TextLink :href="route('products.edit', props.product.id)" prefetch>Edit</TextLink>
             </div>
-            <div
-                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
+            <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
                 <p>Show Product</p>
                 <p>{{ props.product.name }}</p>
                 <p>{{ props.product.description ?? 'No description.' }}</p>

@@ -57,7 +57,6 @@ const submit = () => {
 </script>
 
 <template>
-
     <Head title="Edit Product" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -67,26 +66,53 @@ const submit = () => {
                     <div class="grid gap-6">
                         <div class="grid gap-2">
                             <Label for="name"> Name of Product </Label>
-                            <Input id="name" type="text" required autofocus placeholder="Name of Product" :tabindex="1"
-                                v-model="form.name" @change="form.validate('name')" />
+                            <Input
+                                id="name"
+                                type="text"
+                                required
+                                autofocus
+                                placeholder="Name of Product"
+                                :tabindex="1"
+                                v-model="form.name"
+                                @change="form.validate('name')"
+                            />
                             <InputError :message="form.errors.name" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="price"> Price of Product </Label>
-                            <Input id="price" type="number" required autofocus placeholder="Price of Product"
-                                :tabindex="2" v-model="form.price" @change="form.validate('price')" />
+                            <Input
+                                id="price"
+                                type="number"
+                                required
+                                autofocus
+                                placeholder="Price of Product"
+                                :tabindex="2"
+                                v-model="form.price"
+                                @change="form.validate('price')"
+                            />
                             <InputError :message="form.errors.price" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="description"> Description </Label>
-                            <Input id="description" type="text" placeholder="Description" :tabindex="3"
-                                v-model="form.description" @change="form.validate('description')" />
+                            <Input
+                                id="description"
+                                type="text"
+                                placeholder="Description"
+                                :tabindex="3"
+                                v-model="form.description"
+                                @change="form.validate('description')"
+                            />
                             <InputError :message="form.errors.description" />
                         </div>
                         <div class="grid gap-2">
                             <Label for="image"> Image of the product </Label>
-                            <Input id="image" type="file" @input="form.image = $event.target.files[0]"
-                                @change="form.validate('image')" :tabindex="4" />
+                            <Input
+                                id="image"
+                                type="file"
+                                @input="form.image = $event.target.files[0]"
+                                @change="form.validate('image')"
+                                :tabindex="4"
+                            />
                             <InputError :message="form.errors.image" />
                         </div>
                         <Button type="submit" class="mt-2 w-full" tabindex="5" :disabled="form.processing">
