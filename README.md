@@ -21,6 +21,7 @@ A simple project to practice Laravel and Inertia.js.
 8. Run `npm install`
 
 ### Running the project
+
 1. Run `php artisan serve`
 2. Run `npm run dev` or `npm run build`
 3. Open `http://localhost:8000` in your browser
