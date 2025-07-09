@@ -11,7 +11,9 @@ class DeleteProduct
 {
     public function handle(Product $product): void
     {
-        Storage::disk('products')->delete($product->image);
+        if ($product->image) {
+            Storage::disk('products')->delete($product->image);
+        }
 
         $product->delete();
     }
