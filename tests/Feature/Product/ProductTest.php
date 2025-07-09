@@ -303,6 +303,7 @@ test('can delete product', function () {
     $response = $this->delete(route('products.destroy', $product));
 
     $response->assertRedirect(route('products.index'));
+
     $this->assertDatabaseMissing('products', [
         'id' => $product->id,
     ]);
