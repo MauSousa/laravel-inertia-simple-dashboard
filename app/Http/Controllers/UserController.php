@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Users\CreateUser;
+use App\Actions\Users\DeleteUser;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Carbon\Carbon;
@@ -68,8 +69,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user): void
+    public function destroy(User $user, DeleteUser $action): RedirectResponse
     {
-        //
+        $action->handle($user);
+
+        return to_route('users.index');
     }
 }
