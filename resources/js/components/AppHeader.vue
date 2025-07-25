@@ -12,7 +12,7 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
+import { Barcode, BookOpen, Folder, LayoutGrid, Menu, Search, User } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
@@ -37,6 +37,16 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Products',
+        href: '/products',
+        icon: Barcode,
+    },
+    {
+        title: 'Users',
+        href: '/users',
+        icon: User,
     },
 ];
 
