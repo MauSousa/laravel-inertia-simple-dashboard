@@ -68,3 +68,14 @@ test('can not create new user with existing email', function () {
 
     $response->assertSessionHasErrors('email');
 });
+
+test('can delete user', function () {
+    $user = User::factory()->create();
+    $user2 = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = $this->delete(route('users.destroy', $user2));
+
+    $response->assertRedirect(route('users.index'));
+});
