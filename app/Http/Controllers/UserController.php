@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index(): Response
     {
         return Inertia::render('Users/Index', [
-            'users' => User::all()->map(fn ($user): array => [
+            'users' => User::orderBy('created_at', 'desc')->get()->map(fn ($user): array => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -46,6 +46,8 @@ class UserController extends Controller
     public function store(StoreUserRequest $request, CreateUser $action): RedirectResponse
     {
         $action->handle($request->validated());
+
+        // TODO: Send email to the created user
 
         return to_route('users.index');
     }
