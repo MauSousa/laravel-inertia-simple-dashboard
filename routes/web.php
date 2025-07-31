@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\UserPdfController;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,8 @@ Route::get('dashboard', function () {
         'users' => fn () => User::count(),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('users-pdf', UserPdfController::class)->name('users-pdf');
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
